@@ -1,0 +1,35 @@
+﻿using SSS.Abstraction;
+using System.Collections.Generic;
+
+namespace SSS;
+
+public class SorensenDice : ShingleBase, IStringSimilarity, IStringDistance
+{
+    public SorensenDice(int k) : base(k) { }
+
+    public SorensenDice() { }
+
+    public static SorensenDice Default => field ??= new();
+
+    public double Similarity(string s1, string s2)
+    {
+        InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);
+
+        if (s1.Equals(s2)) return 1;
+
+        var profile1 = GetProfile(s1);
+        var profile2 = GetProfile(s2);
+
+        var union = new HashSet<string>();
+        union.UnionWith(profile1.Keys);
+        union.UnionWith(profile2.Keys);
+        
+        int inter = 0;
+
+        foreach (var key in union) if (profile1.ContainsKey(key) && profile2.ContainsKey(key)) inter++;
+
+        return 2.0 * inter / (profile1.Count + profile2.Count);
+    }
+
+    public double Distance(string s1, string s2) => 1 - Similarity(s1, s2);
+}
