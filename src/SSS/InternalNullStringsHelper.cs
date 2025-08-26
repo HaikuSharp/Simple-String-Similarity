@@ -2,9 +2,9 @@
 
 namespace SSS;
 
-public class InternalNullStringsHelper
+internal static class InternalNullStringsHelper
 {
-    public static void ThrowIfArgumentsIsNull(string s1, string s2)
+    internal static void ThrowIfArgumentsIsNull(string s1, string s2)
     {
 #if !NETCOREAPP
         if(s1 == null) throw new ArgumentNullException(nameof(s1));

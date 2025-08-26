@@ -3,14 +3,28 @@ using System.Collections.Generic;
 
 namespace SSS;
 
+/// <summary>
+/// Sørensen–Dice similarity/distance over k-shingle sets.
+/// </summary>
 public class SorensenDice : ShingleBase, IStringSimilarity, IStringDistance
 {
+    /// <summary>
+    /// Initializes a new instance with the specified shingle size.
+    /// </summary>
+    /// <param name="k">Shingle size k (must be positive).</param>
     public SorensenDice(int k) : base(k) { }
 
+    /// <summary>
+    /// Initializes a new instance with default shingle size.
+    /// </summary>
     public SorensenDice() { }
 
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static SorensenDice Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Similarity(string s1, string s2)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);
@@ -31,5 +45,6 @@ public class SorensenDice : ShingleBase, IStringSimilarity, IStringDistance
         return 2.0 * inter / (profile1.Count + profile2.Count);
     }
 
+    /// <inheritdoc/>
     public double Distance(string s1, string s2) => 1 - Similarity(s1, s2);
 }

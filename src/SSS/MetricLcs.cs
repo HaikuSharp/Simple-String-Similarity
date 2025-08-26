@@ -4,10 +4,17 @@ using System.Linq;
 
 namespace SSS;
 
+/// <summary>
+/// Metric based on LCS similarity: 1 - LCS(s1, s2) / max(|s1|, |s2|).
+/// </summary>
 public class MetricLcs : IStringDistance
 {
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static MetricLcs Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Distance(string s1, string s2)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);

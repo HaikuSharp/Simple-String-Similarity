@@ -5,10 +5,17 @@ using System.Linq;
 
 namespace SSS;
 
+/// <summary>
+/// Damerau–Levenshtein distance with adjacent transpositions, normalized by max string length.
+/// </summary>
 public class Damerau : IStringDistance
 {
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static Damerau Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Distance(string s1, string s2)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);

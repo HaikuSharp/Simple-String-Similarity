@@ -3,10 +3,21 @@ using System;
 
 namespace SSS;
 
+/// <summary>
+/// Weighted Levenshtein distance where substitution, insertion, and deletion have configurable costs.
+/// </summary>
 public class WeightedLevenshtein(ICharacterSubstitution characterSubstitution, ICharacterInsertion characterInsertion, ICharacterDeletion characterDeletion) : IStringDistance
 {
+    /// <inheritdoc/>
     public double Distance(string s1, string s2) => Distance(s1, s2, double.MaxValue);
 
+    /// <summary>
+    /// Computes the weighted Levenshtein distance with an early-exit limit.
+    /// </summary>
+    /// <param name="s1">First string.</param>
+    /// <param name="s2">Second string.</param>
+    /// <param name="limit">Early-exit threshold; if the minimal possible cost reaches this value, it is returned.</param>
+    /// <returns>The weighted edit distance.</returns>
     public double Distance(string s1, string s2, double limit)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);

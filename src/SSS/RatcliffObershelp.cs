@@ -4,10 +4,17 @@ using System.Collections.Generic;
 
 namespace SSS;
 
+/// <summary>
+/// Ratcliff/Obershelp similarity based on matching substrings; distance is 1 - similarity.
+/// </summary>
 public class RatcliffObershelp : IStringSimilarity, IStringDistance
 {
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static RatcliffObershelp Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Similarity(string s1, string s2)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);
@@ -23,8 +30,11 @@ public class RatcliffObershelp : IStringSimilarity, IStringDistance
         return 2.0d * sumOfMatches / (s1.Length + s2.Length);
     }
 
+    /// <inheritdoc/>
     public double Distance(string s1, string s2) => 1.0d - Similarity(s1, s2);
-    
+
+#pragma warning disable IDE0079
+#pragma warning disable IDE0057
 
     private static List<string> GetMatchList(string s1, string s2)
     {
@@ -66,4 +76,7 @@ public class RatcliffObershelp : IStringSimilarity, IStringDistance
 
         return longestSubstring;
     }
+
+#pragma warning restore IDE0057
+#pragma warning restore IDE0079
 }

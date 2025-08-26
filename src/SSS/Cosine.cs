@@ -4,14 +4,28 @@ using System.Collections.Generic;
 
 namespace SSS;
 
+/// <summary>
+/// Cosine similarity/distance over k-shingle profiles.
+/// </summary>
 public class Cosine : ShingleBase, IStringSimilarity, IStringDistance
 {
+    /// <summary>
+    /// Initializes a new instance with the specified shingle size.
+    /// </summary>
+    /// <param name="k">Shingle size k (must be positive).</param>
     public Cosine(int k) : base(k) { }
 
+    /// <summary>
+    /// Initializes a new instance with default shingle size.
+    /// </summary>
     public Cosine() : base() { }
 
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static Cosine Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Similarity(string s1, string s2)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);
@@ -28,6 +42,9 @@ public class Cosine : ShingleBase, IStringSimilarity, IStringDistance
         return DotProduct(profile1, profile2) / (Normalize(profile1) * Normalize(profile2));
     }
 
+    /// <inheritdoc/>
+    public double Distance(string s1, string s2) => 1.0 - Similarity(s1, s2);
+
     private static double Normalize(IDictionary<string, int> profile)
     {
         double agg = 0;
@@ -37,25 +54,23 @@ public class Cosine : ShingleBase, IStringSimilarity, IStringDistance
 
     private static double DotProduct(IDictionary<string, int> profile1, IDictionary<string, int> profile2)
     {
-        var small_profile = profile2;
-        var large_profile = profile1;
+        var smallProfile = profile2;
+        var largeProfile = profile1;
 
         if(profile1.Count < profile2.Count)
         {
-            small_profile = profile1;
-            large_profile = profile2;
+            smallProfile = profile1;
+            largeProfile = profile2;
         }
 
         double agg = 0;
 
-        foreach(var entry in small_profile)
+        foreach(var entry in smallProfile)
         {
-            if(!large_profile.TryGetValue(entry.Key, out var i)) continue;
+            if(!largeProfile.TryGetValue(entry.Key, out var i)) continue;
             agg += 1.0 * entry.Value * i;
         }
 
         return agg;
     }
-
-    public double Distance(string s1, string s2) => 1.0 - Similarity(s1, s2);
 }

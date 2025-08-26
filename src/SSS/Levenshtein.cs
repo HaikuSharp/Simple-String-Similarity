@@ -4,12 +4,26 @@ using System.Linq;
 
 namespace SSS;
 
+/// <summary>
+/// Levenshtein edit distance normalized by max string length.
+/// </summary>
 public class Levenshtein : IStringDistance
 {
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static Levenshtein Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Distance(string s1, string s2) => Distance(s1, s2, int.MaxValue);
 
+    /// <summary>
+    /// Computes the Levenshtein distance with an early-exit limit.
+    /// </summary>
+    /// <param name="s1">First string.</param>
+    /// <param name="s2">Second string.</param>
+    /// <param name="limit">Early-exit threshold; if the minimal possible value exceeds it, returns 1.0.</param>
+    /// <returns>Normalized distance in [0, 1].</returns>
     public static double Distance(string s1, string s2, int limit)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);

@@ -3,15 +3,25 @@ using System;
 
 namespace SSS;
 
+/// <summary>
+/// N-gram distance using character n-gram comparison.
+/// </summary>
 public class NGram(int n) : IStringDistance
 {
     private const int DEFAULT_N = 2;
     private readonly int m_N = n;
 
+    /// <summary>
+    /// Initializes a new instance with the default n (2).
+    /// </summary>
     public NGram() : this(DEFAULT_N) { }
 
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static NGram Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Distance(string s1, string s2)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s2, s2);

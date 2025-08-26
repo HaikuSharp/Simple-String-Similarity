@@ -4,10 +4,17 @@ using System.Linq;
 
 namespace SSS;
 
+/// <summary>
+/// Optimal String Alignment distance (restricted Damerau–Levenshtein), normalized by max length.
+/// </summary>
 public sealed class OptimalStringAlignment : IStringDistance
 {
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static OptimalStringAlignment Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Distance(string s1, string s2)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);

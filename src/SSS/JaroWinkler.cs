@@ -4,18 +4,28 @@ using System.Linq;
 
 namespace SSS;
 
+/// <summary>
+/// Jaro–Winkler similarity/distance with configurable threshold.
+/// </summary>
 public class JaroWinkler(double threshold) : IStringSimilarity, IStringDistance
 {
     private const double DEFAULT_THRESHOLD = 0.7;
     private const int THREE = 3;
     private const double JW_COEF = 0.1;
 
+    /// <summary>
+    /// Initializes a new instance with the default threshold.
+    /// </summary>
     public JaroWinkler() : this(DEFAULT_THRESHOLD) { }
 
     private double Threshold => threshold;
 
+    /// <summary>
+    /// Gets a shared default instance.
+    /// </summary>
     public static JaroWinkler Default => field ??= new();
 
+    /// <inheritdoc/>
     public double Similarity(string s1, string s2)
     {
         InternalNullStringsHelper.ThrowIfArgumentsIsNull(s1, s2);
@@ -32,6 +42,7 @@ public class JaroWinkler(double threshold) : IStringSimilarity, IStringDistance
         return j > Threshold ? j + Math.Min(JW_COEF, 1.0 / mtp[THREE]) * mtp[2] * (1 - j) : j;
     }
 
+    /// <inheritdoc/>
     public double Distance(string s1, string s2) => 1.0 - Similarity(s1, s2);
 
     private static int[] Matches(string s1, string s2)
