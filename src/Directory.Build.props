@@ -16,7 +16,7 @@
 	<PropertyGroup>
 		<PackageId>$(MSBuildProjectName)</PackageId>
 		<Title>$(MSBuildProjectName)</Title>
-		<Description>TODO.</Description>
+		<Description>Fast, well-tested string similarity and distance algorithms for .NET, ready to drop into your app.</Description>
 		<Authors>R2R2HS</Authors>
 		<Company>HaikuSharp</Company>
 		<Copyright>© 2025 $(Company)</Copyright>
